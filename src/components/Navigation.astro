@@ -7,10 +7,10 @@ type Props = {
 
 const { currentPath } = Astro.props;
 const links = [
-  { href: '/profile/', label: 'Profile' },
-  { href: '/world/', label: 'World' },
-  { href: '/story/', label: 'Story' },
-  { href: '/about/', label: 'About' },
+  { href: '/about/', label: 'びうるみについて' },
+  { href: '/terms/', label: '利用規約' },
+  { href: '/download/', label: 'ダウンロード' },
+  { href: '/links/', label: 'リンク' },
 ];
 
 const normalize = (path: string) => (path.endsWith('/') ? path : `${path}/`);
@@ -21,11 +21,6 @@ const activePath = normalize(currentPath);
   <a class="brand-mark" href="/" aria-label="PROJECT BIURUMI home">
     <img src="/assets/brand/typo.svg" alt="PROJECT BIURUMI" />
   </a>
-
-  <p class="event-strip" aria-label="site status">
-    <span>Character file</span>
-    <span>Draft shell</span>
-  </p>
 
   <nav class="desktop-nav" aria-label="主要ナビゲーション">
     {
