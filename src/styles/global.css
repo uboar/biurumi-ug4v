@@ -1644,7 +1644,7 @@ body.is-home main {
     --kv-stage-left: 0px;
     --kv-stage-width: clamp(530px, 148vw, 620px);
     --kv-layer-shift-x: clamp(12px, 4.4vw, 24px);
-    --kv-lower-pattern-offset: clamp(334px, 88vw, 372px);
+    --kv-lower-pattern-offset: clamp(334px, 91vw, 372px);
     --home-wordmark-label-size: clamp(13px, 4.1vw, 17px);
     --home-wordmark-title-size: clamp(50px, 17vw, 72px);
     --home-wordmark-block-height: clamp(54px, 17vw, 72px);
