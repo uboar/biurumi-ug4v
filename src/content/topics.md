@@ -1,19 +1,7 @@
 ---
 items:
-  - dateLabel: 2026.6.x
-    datetime: 2026-06
-    text: OUT
+  - dateLabel: 2026.5.30
+    datetime: 2026-05
+    text: ページのテスト公開
     link: /download/
-  - dateLabel: 2026.6.x
-    datetime: 2026-06
-    text: これはおおだろ
-  - dateLabel: 2026.6.x
-    datetime: 2026-06
-    text: これはおおだろ
-  - dateLabel: 2026.6.x
-    datetime: 2026-06
-    text: これはおおだろ
-  - dateLabel: 2026.6.x
-    datetime: 2026-06
-    text: これはおおだろ
 ---
