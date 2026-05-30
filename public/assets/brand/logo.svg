@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="PROJECT BIURUMI">
+  <defs>
+    <linearGradient id="mark" x1="22" y1="18" x2="108" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#81ecff"/>
+      <stop offset="0.54" stop-color="#c39bff"/>
+      <stop offset="1" stop-color="#ff6c95"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="34" fill="#100c1a"/>
+  <path d="M34 28h38c18 0 30 10 30 25 0 9-5 17-13 21 10 4 16 12 16 23 0 17-13 27-34 27H34V28Zm34 39c10 0 16-4 16-12s-6-12-16-12H51v24h17Zm2 41c11 0 17-5 17-14 0-8-6-13-17-13H51v27h19Z" fill="url(#mark)"/>
+  <path d="M27 95c18 9 35 13 50 11 15-2 26-10 34-23" fill="none" stroke="#81ecff" stroke-width="4" stroke-linecap="round" opacity=".72"/>
+</svg>

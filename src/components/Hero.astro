@@ -1,0 +1,65 @@
+---
+const kvLayers = [
+  { src: '/assets/kv/00_ponite.webp', className: 'kv-layer kv-layer-00 kv-sway-ponite' },
+  { src: '/assets/kv/01_bodyback.webp', className: 'kv-layer kv-layer-01' },
+  { src: '/assets/kv/02_sippo.webp', className: 'kv-layer kv-layer-02 kv-sway-sippo' },
+  { src: '/assets/kv/03_bodyfront.webp', className: 'kv-layer kv-layer-03' },
+  { src: '/assets/kv/04_face.webp', className: 'kv-layer kv-layer-04' },
+  { src: '/assets/kv/05_phone.webp', className: 'kv-layer kv-layer-05 kv-float-phone' },
+];
+---
+
+<section class="home-hero" aria-label="PROJECT BIURUMI">
+  <div class="home-back-mark" aria-hidden="true">
+    <img src="/assets/brand/ug4v-logo-white.svg" width="1080" height="1080" alt="" loading="eager" decoding="async" />
+  </div>
+  <div class="home-wordmark" aria-hidden="true">
+    <span>CHARACTER PROJECT びうるみ</span>
+    <strong>BIURUMI</strong>
+  </div>
+
+  <div class="kv-stage" role="img" aria-label="PROJECT BIURUMI character key visual">
+    <img class={kvLayers[0].className} src={kvLayers[0].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+    <img class={kvLayers[1].className} src={kvLayers[1].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+    <div class="kv-lower-pattern" aria-hidden="true"></div>
+    <img class={kvLayers[2].className} src={kvLayers[2].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+    <img class={kvLayers[3].className} src={kvLayers[3].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+    <img class={kvLayers[4].className} src={kvLayers[4].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+    <img class={kvLayers[5].className} src={kvLayers[5].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+  </div>
+
+  <div class="home-topics" aria-labelledby="home-topics-title">
+    <h2 id="home-topics-title">TOPICS</h2>
+    <div class="topic-list">
+      <article class="topic-row">
+        <time datetime="2026-06">2026.6.x</time>
+        <p>OUT</p>
+      </article>
+      <article class="topic-row">
+        <time datetime="2026-06">2026.6.x</time>
+        <p>これはおおだろ</p>
+      </article>
+      <article class="topic-row">
+        <time datetime="2026-06">2026.6.x</time>
+        <p>これはおおだろ</p>
+      </article>
+      <article class="topic-row">
+        <time datetime="2026-06">2026.6.x</time>
+        <p>これはおおだろ</p>
+      </article>
+      <article class="topic-row">
+        <time datetime="2026-06">2026.6.x</time>
+        <p>これはおおだろ</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="home-hero-front">
+    <nav class="home-page-links" aria-label="主要ページ">
+      <a href="/profile/"><span>Profile</span></a>
+      <a href="/world/"><span>World</span></a>
+      <a href="/story/"><span>Story</span></a>
+      <a href="/about/"><span>About</span></a>
+    </nav>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="96" viewBox="0 0 520 96" role="img" aria-label="PROJECT BIURUMI">
+  <defs>
+    <linearGradient id="word" x1="0" y1="0" x2="520" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#81ecff"/>
+      <stop offset="0.48" stop-color="#c39bff"/>
+      <stop offset="1" stop-color="#ff6c95"/>
+    </linearGradient>
+  </defs>
+  <text x="0" y="34" fill="#afa8bc" font-family="LINE Seed JP, Hiragino Sans, Yu Gothic, system-ui, sans-serif" font-size="17" font-weight="800" letter-spacing="4">PROJECT</text>
+  <text x="0" y="82" fill="url(#word)" font-family="LINE Seed JP, Hiragino Sans, Yu Gothic, system-ui, sans-serif" font-size="52" font-weight="800" letter-spacing="0">BIURUMI</text>
+  <path d="M286 74h186" stroke="url(#word)" stroke-width="5" stroke-linecap="round" opacity=".72"/>
+</svg>

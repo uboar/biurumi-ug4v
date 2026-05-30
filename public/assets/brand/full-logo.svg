@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="260" viewBox="0 0 720 260" role="img" aria-label="PROJECT BIURUMI">
+  <defs>
+    <linearGradient id="full" x1="64" y1="40" x2="660" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#81ecff"/>
+      <stop offset="0.5" stop-color="#c39bff"/>
+      <stop offset="1" stop-color="#ff6c95"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-25%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#c39bff" flood-opacity=".32"/>
+    </filter>
+  </defs>
+  <rect x="22" y="22" width="676" height="216" rx="54" fill="#1c1729" opacity=".86"/>
+  <path d="M78 54h92c43 0 72 24 72 59 0 22-12 39-31 49 24 9 38 29 38 55 0 8-1 15-4 21H78V54Zm86 88c23 0 37-11 37-28 0-18-14-28-37-28h-42v56h42Zm4 72c25 0 40-12 40-32 0-19-15-31-40-31h-46v63h46Z" fill="url(#full)" filter="url(#glow)"/>
+  <text x="300" y="102" fill="#afa8bc" font-family="LINE Seed JP, Hiragino Sans, Yu Gothic, system-ui, sans-serif" font-size="22" font-weight="800" letter-spacing="6">PROJECT</text>
+  <text x="300" y="172" fill="url(#full)" font-family="LINE Seed JP, Hiragino Sans, Yu Gothic, system-ui, sans-serif" font-size="70" font-weight="800" letter-spacing="0">BIURUMI</text>
+  <path d="M300 202h286" stroke="url(#full)" stroke-width="7" stroke-linecap="round" opacity=".78"/>
+</svg>

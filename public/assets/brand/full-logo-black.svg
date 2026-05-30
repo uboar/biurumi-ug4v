@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="260" viewBox="0 0 720 260" role="img" aria-label="PROJECT BIURUMI">
+  <rect x="22" y="22" width="676" height="216" rx="54" fill="#fdf7ff"/>
+  <path d="M78 54h92c43 0 72 24 72 59 0 22-12 39-31 49 24 9 38 29 38 55 0 8-1 15-4 21H78V54Zm86 88c23 0 37-11 37-28 0-18-14-28-37-28h-42v56h42Zm4 72c25 0 40-12 40-32 0-19-15-31-40-31h-46v63h46Z" fill="#100c1a"/>
+  <text x="300" y="102" fill="#585264" font-family="LINE Seed JP, Hiragino Sans, Yu Gothic, system-ui, sans-serif" font-size="22" font-weight="800" letter-spacing="6">PROJECT</text>
+  <text x="300" y="172" fill="#100c1a" font-family="LINE Seed JP, Hiragino Sans, Yu Gothic, system-ui, sans-serif" font-size="70" font-weight="800" letter-spacing="0">BIURUMI</text>
+  <path d="M300 202h286" stroke="#100c1a" stroke-width="7" stroke-linecap="round" opacity=".82"/>
+</svg>
