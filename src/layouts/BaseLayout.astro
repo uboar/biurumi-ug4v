@@ -264,6 +264,7 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
         }
 
         currentSampleVoice = new Audio(src);
+        currentSampleVoice.volume = 0.5;
         currentSampleVoice.play().catch(() => {
           currentSampleVoice = undefined;
         });
