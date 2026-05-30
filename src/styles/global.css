@@ -757,10 +757,6 @@ body.is-home main {
   min-height: 100svh;
 }
 
-body.is-home .site-footer {
-  display: none;
-}
-
 .home-hero {
   position: relative;
   isolation: isolate;
@@ -1086,10 +1082,6 @@ body.is-home .site-footer {
 }
 
 @media (max-width: 780px) {
-  body.is-home .site-footer {
-    display: none;
-  }
-
   .home-hero {
     display: grid;
     --home-min-height: max(100svh, 1088px);
