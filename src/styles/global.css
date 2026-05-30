@@ -1356,7 +1356,7 @@ body.is-home .site-footer {
 .home-wordmark {
   position: absolute;
   top: var(--home-wordmark-top);
-  right: var(--home-right-edge);
+  right: 28%;
   z-index: 3;
   display: grid;
   justify-items: end;
@@ -1480,7 +1480,7 @@ body.is-home .site-footer {
   grid-template-rows: auto minmax(0, 1fr);
   gap: clamp(14px, 1.5vw, 22px);
   width: var(--home-right-width);
-  height: clamp(300px, 38svh, 390px);
+  height: clamp(300px, 12svh, 390px);
   padding: clamp(42px, 4vw, 60px) clamp(40px, 4.4vw, 62px);
   border: 4px solid rgba(255, 255, 255, 0.95);
   border-radius: clamp(42px, 5.6vw, 72px);
@@ -1493,7 +1493,7 @@ body.is-home .site-footer {
 .home-topics h2 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(40px, 4vw, 64px);
+  font-size: clamp(32px, 2vw, 64px);
   font-weight: 900;
   letter-spacing: 0.14em;
   line-height: 1;
@@ -1522,7 +1522,7 @@ body.is-home .site-footer {
   min-width: 0;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(22px, 2.05vw, 34px);
+  font-size: clamp(22px, 1.8vw, 12px);
   font-weight: 500;
   letter-spacing: 0.02em;
   line-height: 1.15;
@@ -1552,6 +1552,7 @@ body.is-home .site-footer {
   position: relative;
   display: flex;
   align-items: center;
+  margin-right: 8px;
   min-height: clamp(50px, 4vw, 66px);
   padding: 0 clamp(22px, 2.5vw, 38px);
   border: 2px solid rgba(255, 255, 255, 0.92);
@@ -1613,7 +1614,7 @@ body.is-home .site-footer {
 
 @media (max-width: 1080px) {
   .home-hero {
-    --home-right-edge: 4%;
+    --home-right-edge: 30%;
     --home-right-width: 45vw;
     --kv-stage-left: -10vw;
     --kv-stage-width: max(620px, 72vw);
