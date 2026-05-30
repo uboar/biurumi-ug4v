@@ -761,7 +761,7 @@ body.is-home main {
   position: relative;
   isolation: isolate;
   --home-bodyfront-top: 45%;
-  --home-min-height: max(100svh, 900px);
+  --home-floor-height: 900px;
   --home-right-edge: clamp(42px, 6.3vw, 118px);
   --home-right-width: min(41vw, 660px);
   --kv-stage-top: clamp(38px, 5.4vh, 92px);
@@ -775,6 +775,14 @@ body.is-home main {
   --home-wordmark-top: calc(var(--kv-lower-pattern-y) - var(--home-wordmark-block-height));
   --home-front-offset: clamp(28px, 4svh, 52px);
   --home-front-top: calc(var(--kv-lower-pattern-y) + var(--home-front-offset));
+  --home-link-height: clamp(50px, 4vw, 66px);
+  --home-link-gap: clamp(18px, 2.4vh, 30px);
+  --home-front-stack-height: calc(var(--home-link-height) * 4 + var(--home-link-gap) * 3);
+  --home-footer-clearance: clamp(70px, 8svh, 118px);
+  --home-content-min-height: calc(
+    var(--home-front-top) + var(--home-front-stack-height) + var(--home-footer-clearance)
+  );
+  --home-min-height: max(100svh, var(--home-floor-height), var(--home-content-min-height));
   min-height: var(--home-min-height);
   overflow: clip;
   padding: 0;
@@ -1021,7 +1029,7 @@ body.is-home main {
   bottom: auto;
   z-index: 20;
   display: grid;
-  gap: clamp(18px, 2.4vh, 30px);
+  gap: var(--home-link-gap);
   width: var(--home-right-width);
   contain: layout paint;
 }
@@ -1029,7 +1037,7 @@ body.is-home main {
 .home-page-links {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(18px, 2.4vh, 30px);
+  gap: var(--home-link-gap);
   width: 100%;
 }
 
@@ -1038,7 +1046,7 @@ body.is-home main {
   display: flex;
   align-items: center;
   margin-right: 8px;
-  min-height: clamp(50px, 4vw, 66px);
+  min-height: var(--home-link-height);
   padding: 0 clamp(22px, 2.5vw, 38px);
   border: 2px solid rgba(255, 255, 255, 0.92);
   border-radius: 20px;
@@ -1120,7 +1128,7 @@ body.is-home main {
 @media (max-width: 780px) {
   .home-hero {
     display: grid;
-    --home-min-height: max(100svh, 1088px);
+    --home-floor-height: 1088px;
     --kv-stage-top: 11vh;
     --kv-stage-left: 50%;
     --kv-stage-width: min(124vw, 640px);
@@ -1129,6 +1137,8 @@ body.is-home main {
     --home-wordmark-title-size: clamp(52px, 18vw, 110px);
     --home-wordmark-block-height: clamp(53px, 17.92vw, 109px);
     --home-front-offset: clamp(360px, 49svh, 440px);
+    --home-link-height: 44px;
+    --home-link-gap: 14px;
     padding: 18px 14px 22px;
     background: linear-gradient(180deg, #9a63c7 0%, #bd2f68 100%);
   }
@@ -1212,6 +1222,7 @@ body.is-home main {
     --kv-stage-top: 14vh;
     --kv-stage-width: 144vw;
     --kv-lower-pattern-offset: 87.37vw;
+    --home-link-gap: 10px;
     padding-inline: 10px;
   }
 
