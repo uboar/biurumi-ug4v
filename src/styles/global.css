@@ -698,7 +698,6 @@ h3 {
   .content-section h1 {
     font-size: 38px;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1081,7 +1080,6 @@ h3 {
   .mobile-nav nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
 }
 
 body.is-home {
@@ -1111,21 +1109,32 @@ body.is-home main {
   --kv-stage-width: max(690px, min(60vw, 970px));
   --kv-layer-shift-x: clamp(34px, 10vw, 82px);
   --kv-lower-pattern-offset: max(419px, min(36.41vw, 589px));
-  --kv-lower-pattern-y: calc(var(--kv-stage-top) + var(--kv-lower-pattern-offset));
+  --kv-lower-pattern-y: calc(
+    var(--kv-stage-top) + var(--kv-lower-pattern-offset)
+  );
   --home-wordmark-label-size: clamp(22px, 3vw, 48px);
   --home-wordmark-title-size: clamp(96px, 14.5vw, 236px);
   --home-wordmark-block-height: clamp(94px, 14vw, 227px);
-  --home-wordmark-top: calc(var(--kv-lower-pattern-y) - var(--home-wordmark-block-height));
+  --home-wordmark-top: calc(
+    var(--kv-lower-pattern-y) - var(--home-wordmark-block-height)
+  );
   --home-front-offset: clamp(28px, 4svh, 52px);
   --home-front-top: calc(var(--kv-lower-pattern-y) + var(--home-front-offset));
   --home-link-height: clamp(50px, 4vw, 66px);
   --home-link-gap: clamp(18px, 2.4vh, 30px);
-  --home-front-stack-height: calc(var(--home-link-height) * 4 + var(--home-link-gap) * 3);
+  --home-front-stack-height: calc(
+    var(--home-link-height) * 4 + var(--home-link-gap) * 3
+  );
   --home-footer-clearance: clamp(70px, 8svh, 118px);
   --home-content-min-height: calc(
-    var(--home-front-top) + var(--home-front-stack-height) + var(--home-footer-clearance)
+    var(--home-front-top) + var(--home-front-stack-height) +
+      var(--home-footer-clearance)
   );
-  --home-min-height: max(100svh, var(--home-floor-height), var(--home-content-min-height));
+  --home-min-height: max(
+    100svh,
+    var(--home-floor-height),
+    var(--home-content-min-height)
+  );
   min-height: var(--home-min-height);
   overflow: clip;
   padding: 0;
@@ -1183,7 +1192,15 @@ body.is-home main {
   display: grid;
   justify-items: end;
   width: min(49vw, 780px);
-  color: #0C0813;
+  color:
+    linear-gradient(120deg, rgba(195, 155, 255, 0.12), transparent 34%),
+    linear-gradient(240deg, rgba(129, 236, 255, 0.1), transparent 30%),
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      var(--surface-container-low) 52%,
+      #0b0712 100%
+    );
   line-height: 0.8;
   pointer-events: none;
 }
@@ -1359,7 +1376,7 @@ body.is-home main {
   min-width: 0;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(22px, 1.8vw, 12px);
+  font-size: clamp(12px, 1.8vw, 22px);
   font-weight: 500;
   letter-spacing: 0.02em;
   line-height: 1.15;
@@ -1482,32 +1499,48 @@ body.is-home main {
 
 @media (max-width: 780px) {
   .home-hero {
-    display: grid;
-    --home-floor-height: 1088px;
-    --kv-stage-top: 11vh;
-    --kv-stage-left: 50%;
-    --kv-stage-width: min(124vw, 640px);
-    --kv-layer-shift-x: clamp(18px, 5vw, 34px);
-    --kv-lower-pattern-offset: min(75.24vw, 388px);
-    --home-wordmark-label-size: clamp(14px, 4.4vw, 26px);
-    --home-wordmark-title-size: clamp(52px, 18vw, 110px);
-    --home-wordmark-block-height: clamp(53px, 17.92vw, 109px);
-    --home-front-offset: clamp(360px, 49svh, 440px);
-    --home-link-height: 44px;
-    --home-link-gap: 14px;
-    padding: 18px 14px 22px;
-    background: linear-gradient(180deg, #9a63c7 0%, #bd2f68 100%);
+    --home-floor-height: 900px;
+    --home-right-edge: clamp(14px, 4vw, 28px);
+    --home-right-width: min(57vw, 360px);
+    --kv-stage-top: clamp(74px, 12svh, 118px);
+    --kv-stage-left: 0px;
+    --kv-stage-width: clamp(490px, 134vw, 690px);
+    --kv-layer-shift-x: clamp(18px, 5.2vw, 36px);
+    --kv-lower-pattern-offset: clamp(354px, 91vw, 430px);
+    --home-wordmark-label-size: clamp(15px, 4vw, 26px);
+    --home-wordmark-title-size: clamp(58px, 17vw, 116px);
+    --home-wordmark-block-height: clamp(66px, 19vw, 118px);
+    --home-front-offset: clamp(28px, 4.8svh, 48px);
+    --home-link-height: clamp(42px, 6.3svh, 52px);
+    --home-link-gap: clamp(9px, 1.8svh, 14px);
+    --home-footer-clearance: 28px;
+    background:
+      radial-gradient(at 18% 16%, rgba(182, 132, 255, 1) 0%, transparent 52%),
+      radial-gradient(at 82% 16%, rgba(255, 64, 130, 1) 0%, transparent 52%),
+      radial-gradient(at 64% 98%, rgba(0, 229, 255, 1) 0%, transparent 48%),
+      rgba(182, 132, 255, 1);
   }
 
   .home-back-mark {
-    top: 9%;
-    left: -6%;
-    width: 52vw;
-    opacity: 0.48;
+    top: 9.5%;
+    left: -8%;
+    width: clamp(210px, 58vw, 360px);
+    opacity: 0.72;
   }
 
   .home-wordmark {
-    right: 4%;
+    top: calc(var(--home-wordmark-top) + 2px);
+    right: 8px;
+    left: 12px;
+    justify-items: start;
+    z-index: 30;
+    width: auto;
+    overflow: visible;
+  }
+
+  .home-wordmark span,
+  .home-wordmark strong {
+    max-width: 100%;
   }
 
   .kv-stage {
@@ -1516,33 +1549,33 @@ body.is-home main {
     z-index: 8;
     width: var(--kv-stage-width);
     min-width: 0;
-    transform: translateX(-62%);
+    transform: none;
   }
 
   .kv-lower-pattern {
-    right: -9%;
-    left: -9%;
+    right: -10vw;
+    left: -10vw;
     width: auto;
     margin: 0;
   }
 
   .home-topics {
-    top: 2.4%;
-    right: 12px;
+    top: clamp(18px, 3.2svh, 30px);
+    right: var(--home-right-edge);
     left: auto;
     z-index: 12;
-    width: min(58vw, 360px);
+    width: var(--home-right-width);
     height: auto;
     min-height: 0;
-    padding: 20px 20px 18px;
+    padding: clamp(18px, 4.6vw, 30px);
     border-width: 2px;
-    border-radius: 28px;
-    background: rgba(147, 84, 185, 0.74);
+    border-radius: clamp(26px, 7.2vw, 42px);
+    background: transparent;
     backdrop-filter: blur(6px);
   }
 
   .home-topics h2 {
-    font-size: clamp(22px, 7vw, 34px);
+    font-size: clamp(24px, 8.2vw, 38px);
   }
 
   .topic-row {
@@ -1550,49 +1583,65 @@ body.is-home main {
   }
 
   .topic-row time,
-  .topic-row p {
-    font-size: clamp(13px, 3.3vw, 18px);
+  .topic-row p,
+  .topic-row a {
+    font-size: clamp(12px, 3.2vw, 16px);
   }
 
   .home-hero-front {
-    right: 14px;
+    top: var(--home-front-top);
+    right: var(--home-right-edge);
+    left: auto;
     bottom: auto;
     z-index: 20;
-    width: min(56vw, 360px);
+    width: var(--home-right-width);
   }
 
   .home-page-links {
-    gap: 14px;
+    gap: var(--home-link-gap);
   }
 
   .home-page-links a {
-    min-height: 44px;
-    padding-inline: 16px;
+    min-height: var(--home-link-height);
+    margin-right: 0;
+    padding-inline: clamp(13px, 4vw, 24px);
     border-radius: 14px;
-    font-size: 12px;
+    font-size: clamp(11px, 3.15vw, 15px);
+    line-height: 1.18;
+    letter-spacing: 0.04em;
+    background: rgba(21, 17, 31, 0.28);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 
 @media (max-width: 420px) {
   .home-hero {
-    --kv-stage-top: 14vh;
-    --kv-stage-width: 144vw;
-    --kv-layer-shift-x: clamp(12px, 3.8vw, 22px);
-    --kv-lower-pattern-offset: 87.37vw;
+    --home-right-edge: 14px;
+    --home-right-width: calc(100vw - 28px);
+    --kv-stage-top: clamp(104px, 14svh, 126px);
+    --kv-stage-left: 0px;
+    --kv-stage-width: clamp(530px, 148vw, 620px);
+    --kv-layer-shift-x: clamp(12px, 4.4vw, 24px);
+    --kv-lower-pattern-offset: clamp(334px, 88vw, 372px);
+    --home-wordmark-label-size: clamp(13px, 4.1vw, 17px);
+    --home-wordmark-title-size: clamp(50px, 17vw, 72px);
+    --home-wordmark-block-height: clamp(54px, 17vw, 72px);
+    --home-front-offset: clamp(22px, 3.7svh, 34px);
+    --home-link-height: 43px;
     --home-link-gap: 10px;
-    padding-inline: 10px;
+    --home-footer-clearance: 20px;
   }
 
-  .kv-stage {
-    transform: translateX(-66%);
+  .home-back-mark {
+    top: 11%;
+    left: -12%;
+    width: 66vw;
   }
 
   .home-topics {
-    width: calc(100vw - 28px);
-    top: 12px;
-    right: 14px;
-    left: 14px;
-    padding: 16px;
+    width: min(58vw, 226px);
+    padding: 14px 15px 13px;
     border-radius: 24px;
   }
 
@@ -1605,17 +1654,30 @@ body.is-home main {
   }
 
   .home-wordmark {
-    right: auto;
-    left: 5%;
+    right: 6px;
+    left: 8px;
+    width: auto;
+  }
+
+  .home-wordmark span {
+    max-width: 100%;
+    font-size: var(--home-wordmark-label-size);
+    white-space: normal;
   }
 
   .home-hero-front {
     right: 12px;
-    left: 12px;
-    width: auto;
+    left: auto;
+    width: min(58vw, 226px);
   }
 
   .home-page-links {
-    gap: 10px;
+    gap: var(--home-link-gap);
+  }
+
+  .home-page-links a {
+    min-height: var(--home-link-height);
+    padding-inline: 12px;
+    font-size: 10.5px;
   }
 }
