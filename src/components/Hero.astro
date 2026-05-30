@@ -1,4 +1,6 @@
 ---
+import { getEntry } from 'astro:content';
+
 const kvLayers = [
   { src: '/assets/kv/00_ponite.webp', className: 'kv-layer kv-layer-00 kv-sway-ponite' },
   { src: '/assets/kv/01_bodyback.webp', className: 'kv-layer kv-layer-01' },
@@ -7,6 +9,9 @@ const kvLayers = [
   { src: '/assets/kv/04_face.webp', className: 'kv-layer kv-layer-04' },
   { src: '/assets/kv/05_phone.webp', className: 'kv-layer kv-layer-05 kv-float-phone' },
 ];
+
+const topics = await getEntry('topics', 'topics');
+const topicItems = topics?.data.items.filter((item) => !item.draft).slice(0, 5) ?? [];
 ---
 
 <section class="home-hero" aria-label="PROJECT BIURUMI">
@@ -63,35 +68,21 @@ const kvLayers = [
   <div class="home-topics" aria-labelledby="home-topics-title">
     <h2 id="home-topics-title">TOPICS</h2>
     <div class="topic-list">
-      <article class="topic-row">
-        <time datetime="2026-06">2026.6.x</time>
-        <p>OUT</p>
-      </article>
-      <article class="topic-row">
-        <time datetime="2026-06">2026.6.x</time>
-        <p>これはおおだろ</p>
-      </article>
-      <article class="topic-row">
-        <time datetime="2026-06">2026.6.x</time>
-        <p>これはおおだろ</p>
-      </article>
-      <article class="topic-row">
-        <time datetime="2026-06">2026.6.x</time>
-        <p>これはおおだろ</p>
-      </article>
-      <article class="topic-row">
-        <time datetime="2026-06">2026.6.x</time>
-        <p>これはおおだろ</p>
-      </article>
+      {topicItems.map((topic) => (
+        <article class="topic-row">
+          <time datetime={topic.datetime}>{topic.dateLabel}</time>
+          {topic.link ? <a href={topic.link}>{topic.text}</a> : <p>{topic.text}</p>}
+        </article>
+      ))}
     </div>
   </div>
 
   <div class="home-hero-front">
     <nav class="home-page-links" aria-label="主要ページ">
-      <a href="/profile/"><span>Profile</span></a>
-      <a href="/world/"><span>World</span></a>
-      <a href="/story/"><span>Story</span></a>
-      <a href="/about/"><span>About</span></a>
+      <a href="/about/"><span>ABOUT / びうるみについて</span></a>
+      <a href="/terms/"><span>TERMS / 利用規約</span></a>
+      <a href="/download/"><span>DOWNLOAD / ダウンロード</span></a>
+      <a href="/links/"><span>LINKS / リンク</span></a>
     </nav>
   </div>
 </section>

@@ -1011,7 +1011,8 @@ body.is-home main {
 }
 
 .topic-row time,
-.topic-row p {
+.topic-row p,
+.topic-row a {
   min-width: 0;
   margin: 0;
   color: #ffffff;
@@ -1020,6 +1021,16 @@ body.is-home main {
   letter-spacing: 0.02em;
   line-height: 1.15;
   white-space: nowrap;
+}
+
+.topic-row a {
+  text-decoration: none;
+}
+
+.topic-row a:hover,
+.topic-row a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
 }
 
 .home-hero-front {
