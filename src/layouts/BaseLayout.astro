@@ -55,12 +55,12 @@ const ogImage = new URL(`/assets/og/${ogSlug}.png`, Astro.site ?? Astro.url);
       <footer class="site-footer">
         <div class="footer-brand">
           <img src="/assets/brand/typo.svg" alt="PROJECT BIURUMI" loading="lazy" />
-          <p>Character landing page shell.</p>
+          <p>© 2026 ug4v.com All rights reserved.</p>
         </div>
         <nav class="footer-meta" aria-label="ページリンク">
           <a href="/about/">びうるみについて</a>
           <a href="/terms/">利用規約</a>
-          <a href="/download/">ダウンロード</a>
+          <a href="https://addler.jp/c/biurumi">ダウンロード</a>
           <a href="/links/">リンク</a>
         </nav>
       </footer>
@@ -115,6 +115,20 @@ const ogImage = new URL(`/assets/og/${ogSlug}.png`, Astro.site ?? Astro.url);
             artworkModal.classList.remove('is-closing');
             artworkModal.showModal();
           }
+
+          return;
+        }
+
+        const termsAgreeButton = event.target.closest('[data-terms-agree-button]');
+
+        if (termsAgreeButton) {
+          const termsDownloadGate = termsAgreeButton.closest('[data-terms-download-gate]');
+          const termsDownloadCode = termsDownloadGate?.querySelector('[data-terms-download-code]');
+
+          termsDownloadCode?.removeAttribute('hidden');
+          termsDownloadGate?.classList.add('is-agreed');
+          termsAgreeButton.setAttribute('disabled', '');
+          termsAgreeButton.textContent = '利用規約に同意済み';
 
           return;
         }
