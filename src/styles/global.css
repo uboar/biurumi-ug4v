@@ -776,7 +776,7 @@ body.is-home main {
   --home-front-offset: clamp(28px, 4svh, 52px);
   --home-front-top: calc(var(--kv-lower-pattern-y) + var(--home-front-offset));
   min-height: var(--home-min-height);
-  overflow-x: hidden;
+  overflow: clip;
   padding: 0;
   background:
     radial-gradient(at 20% 20%, rgba(182, 132, 255, 1) 0%, transparent 50%),
@@ -787,6 +787,26 @@ body.is-home main {
       transparent 50%
     ),
     rgba(182, 132, 255, 1);
+}
+
+.home-hero::after {
+  position: absolute;
+  top: var(--kv-lower-pattern-y);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  background:
+    linear-gradient(120deg, rgba(195, 155, 255, 0.12), transparent 34%),
+    linear-gradient(240deg, rgba(129, 236, 255, 0.1), transparent 30%),
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      var(--surface-container-low) 52%,
+      #0b0712 100%
+    );
+  content: "";
+  pointer-events: none;
 }
 
 .home-back-mark {
@@ -853,7 +873,7 @@ body.is-home main {
   z-index: 4;
   top: var(--kv-lower-pattern-offset);
   right: -2%;
-  bottom: min(0px, calc(var(--kv-stage-top) + 100% - 100svh));
+  bottom: min(0px, calc(var(--kv-stage-top) + 100% - var(--home-min-height)));
   left: -9%;
   width: 120lvw;
   height: auto;
