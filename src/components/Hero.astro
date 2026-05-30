@@ -18,7 +18,7 @@ const kvLayers = [
     <strong>BIURUMI</strong>
   </div>
 
-  <div class="kv-stage" role="img" aria-label="PROJECT BIURUMI character key visual">
+  <div class="kv-stage is-kv-pending" role="img" aria-label="PROJECT BIURUMI character key visual" data-kv-stage>
     <img class={kvLayers[0].className} src={kvLayers[0].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
     <img class={kvLayers[1].className} src={kvLayers[1].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
     <div class="kv-lower-pattern" aria-hidden="true"></div>
@@ -27,6 +27,38 @@ const kvLayers = [
     <img class={kvLayers[4].className} src={kvLayers[4].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
     <img class={kvLayers[5].className} src={kvLayers[5].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
   </div>
+
+  <script>
+    const kvStages = document.querySelectorAll<HTMLElement>('[data-kv-stage]');
+
+    kvStages.forEach((stage) => {
+      const images = Array.from(stage.querySelectorAll<HTMLImageElement>('img'));
+
+      if (images.length === 0) {
+        stage.classList.remove('is-kv-pending');
+        stage.classList.add('is-kv-ready');
+        return;
+      }
+
+      const waitForImage = (image: HTMLImageElement) => {
+        if (image.complete && image.naturalWidth > 0) {
+          return Promise.resolve();
+        }
+
+        return new Promise<void>((resolve) => {
+          image.addEventListener('load', () => resolve(), { once: true });
+          image.addEventListener('error', () => resolve(), { once: true });
+        });
+      };
+
+      Promise.all(images.map(waitForImage)).then(() => {
+        requestAnimationFrame(() => {
+          stage.classList.remove('is-kv-pending');
+          stage.classList.add('is-kv-ready');
+        });
+      });
+    });
+  </script>
 
   <div class="home-topics" aria-labelledby="home-topics-title">
     <h2 id="home-topics-title">TOPICS</h2>

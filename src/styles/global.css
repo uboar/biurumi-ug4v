@@ -899,15 +899,27 @@ body.is-home main {
   left: -3%;
   width: 106%;
   height: 106%;
+  opacity: 1;
   object-fit: contain;
   transform: translate3d(0, 0, 0);
   transform-origin: 45% 32%;
+  transition: opacity 760ms var(--ease-standard);
   will-change: transform;
+}
+
+.kv-stage.is-kv-pending .kv-layer {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+.kv-stage.is-kv-ready .kv-layer {
+  opacity: 1;
 }
 
 .kv-layer-00 {
   z-index: 2;
   filter: drop-shadow(18px 26px 0 rgba(0, 187, 214, 0.12));
+  transform-origin: 32.6% 31.7%;
 }
 
 .kv-layer-01 {
@@ -929,7 +941,7 @@ body.is-home main {
 
 .kv-layer-05 {
   z-index: 8;
-  transform-origin: 39% 61%;
+  transform-origin: 57.3% 56.1%;
 }
 
 .kv-sway-ponite {
@@ -1055,11 +1067,11 @@ body.is-home main {
 @keyframes kv-sway-ponite {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
+    transform: rotate(0deg);
   }
 
   50% {
-    transform: translate3d(-0.9%, 0.4%, 0) rotate(-1.4deg);
+    transform: rotate(-2.8deg);
   }
 }
 
@@ -1077,11 +1089,11 @@ body.is-home main {
 @keyframes kv-float-phone {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
+    transform: rotate(0deg);
   }
 
   50% {
-    transform: translate3d(0.5%, -1.1%, 0) rotate(1deg);
+    transform: rotate(3.2deg);
   }
 }
 
