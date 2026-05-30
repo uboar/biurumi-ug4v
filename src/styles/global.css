@@ -1014,12 +1014,33 @@ h3 {
   cursor: pointer;
 }
 
-.artwork-modal-image {
-  width: 100%;
-  max-height: calc(100svh - 130px);
+.artwork-modal-viewport {
+  display: grid;
+  place-items: center;
+  height: min(72svh, 760px);
+  overflow: hidden;
   border-radius: var(--radius);
-  object-fit: contain;
   background: rgba(0, 0, 0, 0.24);
+  cursor: zoom-in;
+  touch-action: none;
+  user-select: none;
+}
+
+.artwork-modal-image {
+  --artwork-scale: 1;
+  --artwork-x: 0px;
+  --artwork-y: 0px;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: translate3d(var(--artwork-x), var(--artwork-y), 0) scale(var(--artwork-scale));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.artwork-modal-image.is-zoomed {
+  cursor: zoom-out;
 }
 
 .chapter-list {
