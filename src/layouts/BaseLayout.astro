@@ -82,6 +82,41 @@ const ogImage = new URL(`/assets/og/${ogSlug}.png`, Astro.site ?? Astro.url);
       const artworkModalClose = document.querySelector('.artwork-modal-close');
       let artworkModalCloseTimer;
 
+      window.biurumiInitKvStages = () => {
+        const kvStages = document.querySelectorAll('[data-kv-stage]');
+        const waitForImage = (image) => {
+          if (image.complete && image.naturalWidth > 0) {
+            return Promise.resolve();
+          }
+
+          return new Promise((resolve) => {
+            image.addEventListener('load', () => resolve(), { once: true });
+            image.addEventListener('error', () => resolve(), { once: true });
+          });
+        };
+
+        kvStages.forEach((stage) => {
+          const images = Array.from(stage.querySelectorAll('img'));
+
+          if (images.length === 0) {
+            stage.classList.remove('is-kv-pending');
+            stage.classList.add('is-kv-ready');
+            return;
+          }
+
+          Promise.all(images.map(waitForImage)).then(() => {
+            requestAnimationFrame(() => {
+              if (!stage.isConnected) {
+                return;
+              }
+
+              stage.classList.remove('is-kv-pending');
+              stage.classList.add('is-kv-ready');
+            });
+          });
+        });
+      };
+
       const closeArtworkModal = () => {
         if (!artworkModal?.open) {
           return;
@@ -154,6 +189,13 @@ const ogImage = new URL(`/assets/og/${ogSlug}.png`, Astro.site ?? Astro.url);
           currentSampleVoice = undefined;
         });
       });
+
+      window.biurumiInitKvStages();
+
+      if (!window.biurumiKvPageLoadListener) {
+        window.biurumiKvPageLoadListener = () => window.biurumiInitKvStages?.();
+        document.addEventListener('astro:page-load', window.biurumiKvPageLoadListener);
+      }
 
       artworkModalClose?.addEventListener('click', () => {
         closeArtworkModal();
