@@ -1109,6 +1109,7 @@ body.is-home main {
   --kv-stage-top: clamp(38px, 5.4vh, 92px);
   --kv-stage-left: clamp(-38px, 2vw, 52px);
   --kv-stage-width: max(690px, min(60vw, 970px));
+  --kv-layer-shift-x: clamp(34px, 10vw, 82px);
   --kv-lower-pattern-offset: max(419px, min(36.41vw, 589px));
   --kv-lower-pattern-y: calc(var(--kv-stage-top) + var(--kv-lower-pattern-offset));
   --home-wordmark-label-size: clamp(22px, 3vw, 48px);
@@ -1246,7 +1247,7 @@ body.is-home main {
   top: -3%;
   right: auto;
   bottom: auto;
-  left: -3%;
+  left: calc(-3% + var(--kv-layer-shift-x));
   width: 106%;
   height: 106%;
   opacity: 1;
@@ -1464,6 +1465,7 @@ body.is-home main {
     --home-right-width: 45vw;
     --kv-stage-left: -10vw;
     --kv-stage-width: max(620px, 72vw);
+    --kv-layer-shift-x: clamp(28px, 5vw, 58px);
     --kv-lower-pattern-offset: max(376px, 43.69vw);
   }
 
@@ -1485,6 +1487,7 @@ body.is-home main {
     --kv-stage-top: 11vh;
     --kv-stage-left: 50%;
     --kv-stage-width: min(124vw, 640px);
+    --kv-layer-shift-x: clamp(18px, 5vw, 34px);
     --kv-lower-pattern-offset: min(75.24vw, 388px);
     --home-wordmark-label-size: clamp(14px, 4.4vw, 26px);
     --home-wordmark-title-size: clamp(52px, 18vw, 110px);
@@ -1574,6 +1577,7 @@ body.is-home main {
   .home-hero {
     --kv-stage-top: 14vh;
     --kv-stage-width: 144vw;
+    --kv-layer-shift-x: clamp(12px, 3.8vw, 22px);
     --kv-lower-pattern-offset: 87.37vw;
     --home-link-gap: 10px;
     padding-inline: 10px;
