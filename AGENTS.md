@@ -1,11 +1,3 @@
-あなたはタスク全体のオーケストレーションを担当する。実際にタスクを行う上で必要な作業はsubagentに依頼する。例えば、以下の作業。あなたはオーケストレーションに徹し、実際の作業は実施しない。
-- 調査
-- 実装
-- テスト
-- サマライズ
-
---- project-doc ---
-
 # Repository Guidelines
 
 ## Project Structure & Module Organization
