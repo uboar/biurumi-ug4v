@@ -65,5 +65,96 @@ const ogImage = new URL(`/assets/og/${ogSlug}.png`, Astro.site ?? Astro.url);
         </nav>
       </footer>
     </div>
+    <dialog class="artwork-modal" aria-labelledby="artwork-modal-title">
+      <div class="artwork-modal-panel">
+        <div class="artwork-modal-header">
+          <h2 id="artwork-modal-title">Artwork</h2>
+          <button class="artwork-modal-close" type="button" aria-label="閉じる">×</button>
+        </div>
+        <img class="artwork-modal-image" alt="" />
+      </div>
+    </dialog>
+    <script is:inline>
+      let currentSampleVoice;
+      const artworkModal = document.querySelector('.artwork-modal');
+      const artworkModalImage = document.querySelector('.artwork-modal-image');
+      const artworkModalTitle = document.querySelector('#artwork-modal-title');
+      const artworkModalClose = document.querySelector('.artwork-modal-close');
+      let artworkModalCloseTimer;
+
+      const closeArtworkModal = () => {
+        if (!artworkModal?.open) {
+          return;
+        }
+
+        window.clearTimeout(artworkModalCloseTimer);
+        artworkModal.classList.add('is-closing');
+        artworkModalCloseTimer = window.setTimeout(() => {
+          artworkModal.close();
+          artworkModal.classList.remove('is-closing');
+          if (artworkModalImage) {
+            artworkModalImage.removeAttribute('src');
+          }
+        }, 180);
+      };
+
+      document.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) {
+          return;
+        }
+
+        const artworkButton = event.target.closest('.artwork-zoom-button');
+
+        if (artworkButton && artworkModal && artworkModalImage && artworkModalTitle) {
+          const image = artworkButton.querySelector('img');
+
+          if (image) {
+            artworkModalImage.src = image.currentSrc || image.src;
+            artworkModalImage.alt = image.alt;
+            artworkModalTitle.textContent = image.alt || 'Artwork';
+            artworkModal.classList.remove('is-closing');
+            artworkModal.showModal();
+          }
+
+          return;
+        }
+
+        const button = event.target.closest('[data-audio-src]');
+
+        if (!button) {
+          return;
+        }
+
+        const src = button.getAttribute('data-audio-src');
+
+        if (!src) {
+          return;
+        }
+
+        if (currentSampleVoice) {
+          currentSampleVoice.pause();
+        }
+
+        currentSampleVoice = new Audio(src);
+        currentSampleVoice.play().catch(() => {
+          currentSampleVoice = undefined;
+        });
+      });
+
+      artworkModalClose?.addEventListener('click', () => {
+        closeArtworkModal();
+      });
+
+      artworkModal?.addEventListener('click', (event) => {
+        if (event.target === artworkModal) {
+          closeArtworkModal();
+        }
+      });
+
+      artworkModal?.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeArtworkModal();
+      });
+    </script>
   </body>
 </html>
