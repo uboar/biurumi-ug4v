@@ -14,10 +14,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 const normalizePath = (path: string) =>
   path.endsWith('/') ? path : `${path}/`;
 const isHome = normalizePath(Astro.url.pathname) === '/';
-const ogSlug = isHome
-  ? 'index'
-  : normalizePath(Astro.url.pathname).replace(/^\/|\/$/g, '').replaceAll('/', '-');
-const ogImage = new URL(`/assets/og/${ogSlug}.png`, Astro.site ?? Astro.url);
+const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
 ---
 
 <!doctype html>

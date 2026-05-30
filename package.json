@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "og:generate": "node scripts/generate-og-images.mjs",
-    "build": "astro build && pnpm og:generate",
+    "build": "astro build",
     "preview": "astro preview",
     "deploy": "pnpm build && wrangler deploy"
   },
