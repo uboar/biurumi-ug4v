@@ -1287,6 +1287,17 @@ body.is-home .site-footer {
   --home-min-height: max(100svh, 900px);
   --home-right-edge: clamp(42px, 6.3vw, 118px);
   --home-right-width: min(41vw, 660px);
+  --kv-stage-top: clamp(38px, 5.4vh, 92px);
+  --kv-stage-left: clamp(-38px, 2vw, 52px);
+  --kv-stage-width: max(690px, min(60vw, 970px));
+  --kv-lower-pattern-offset: max(419px, min(36.41vw, 589px));
+  --kv-lower-pattern-y: calc(var(--kv-stage-top) + var(--kv-lower-pattern-offset));
+  --home-wordmark-label-size: clamp(22px, 3vw, 48px);
+  --home-wordmark-title-size: clamp(96px, 14.5vw, 236px);
+  --home-wordmark-block-height: clamp(94px, 14vw, 227px);
+  --home-wordmark-top: calc(var(--kv-lower-pattern-y) - var(--home-wordmark-block-height));
+  --home-front-offset: clamp(28px, 4svh, 52px);
+  --home-front-top: calc(var(--kv-lower-pattern-y) + var(--home-front-offset));
   min-height: var(--home-min-height);
   overflow-x: hidden;
   padding: 0;
@@ -1344,7 +1355,7 @@ body.is-home .site-footer {
 
 .home-wordmark {
   position: absolute;
-  top: 30%;
+  top: var(--home-wordmark-top);
   right: var(--home-right-edge);
   z-index: 3;
   display: grid;
@@ -1357,14 +1368,14 @@ body.is-home .site-footer {
 
 .home-wordmark span {
   margin-left: 0.55em;
-  font-size: clamp(22px, 3vw, 48px);
+  font-size: var(--home-wordmark-label-size);
   font-weight: 900;
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
 
 .home-wordmark strong {
-  font-size: clamp(96px, 14.5vw, 236px);
+  font-size: var(--home-wordmark-title-size);
   font-weight: 900;
   letter-spacing: 0;
   white-space: nowrap;
@@ -1372,12 +1383,11 @@ body.is-home .site-footer {
 
 .kv-stage {
   position: absolute;
-  --kv-stage-top: clamp(38px, 5.4vh, 92px);
   top: var(--kv-stage-top);
-  left: clamp(-38px, 2vw, 52px);
+  left: var(--kv-stage-left);
   z-index: 8;
-  width: min(60vw, 970px);
-  min-width: 690px;
+  width: var(--kv-stage-width);
+  min-width: 0;
   aspect-ratio: 1958 / 2160;
   pointer-events: none;
 }
@@ -1392,7 +1402,7 @@ body.is-home .site-footer {
 
 .kv-lower-pattern {
   z-index: 4;
-  top: calc(100% - var(--home-bodyfront-top));
+  top: var(--kv-lower-pattern-offset);
   right: -10%;
   bottom: min(0px, calc(var(--kv-stage-top) + 100% - 100svh));
   left: -9%;
@@ -1521,8 +1531,9 @@ body.is-home .site-footer {
 
 .home-hero-front {
   position: absolute;
+  top: var(--home-front-top);
   right: var(--home-right-edge);
-  bottom: clamp(32px, 5.4vh, 70px);
+  bottom: auto;
   z-index: 20;
   display: grid;
   gap: clamp(18px, 2.4vh, 30px);
@@ -1604,12 +1615,9 @@ body.is-home .site-footer {
   .home-hero {
     --home-right-edge: 4%;
     --home-right-width: 45vw;
-  }
-
-  .kv-stage {
-    left: -10vw;
-    width: 72vw;
-    min-width: 620px;
+    --kv-stage-left: -10vw;
+    --kv-stage-width: max(620px, 72vw);
+    --kv-lower-pattern-offset: max(376px, 43.69vw);
   }
 
   .home-topics {
@@ -1631,6 +1639,14 @@ body.is-home .site-footer {
   .home-hero {
     display: grid;
     --home-min-height: max(100svh, 1088px);
+    --kv-stage-top: 11vh;
+    --kv-stage-left: 50%;
+    --kv-stage-width: min(124vw, 640px);
+    --kv-lower-pattern-offset: min(75.24vw, 388px);
+    --home-wordmark-label-size: clamp(14px, 4.4vw, 26px);
+    --home-wordmark-title-size: clamp(52px, 18vw, 110px);
+    --home-wordmark-block-height: clamp(53px, 17.92vw, 109px);
+    --home-front-offset: clamp(360px, 49svh, 440px);
     padding: 18px 14px 22px;
     background: linear-gradient(180deg, #9a63c7 0%, #bd2f68 100%);
   }
@@ -1643,24 +1659,14 @@ body.is-home .site-footer {
   }
 
   .home-wordmark {
-    top: 40%;
     right: 4%;
   }
 
-  .home-wordmark span {
-    font-size: clamp(14px, 4.4vw, 26px);
-  }
-
-  .home-wordmark strong {
-    font-size: clamp(52px, 18vw, 110px);
-  }
-
   .kv-stage {
-    --kv-stage-top: 11vh;
     top: var(--kv-stage-top);
-    left: 50%;
+    left: var(--kv-stage-left);
     z-index: 8;
-    width: min(124vw, 640px);
+    width: var(--kv-stage-width);
     min-width: 0;
     transform: translateX(-62%);
   }
@@ -1706,7 +1712,6 @@ body.is-home .site-footer {
 
   .home-hero-front {
     right: 14px;
-    top: clamp(760px, 96svh, 860px);
     bottom: auto;
     z-index: 20;
     width: min(56vw, 360px);
@@ -1726,12 +1731,13 @@ body.is-home .site-footer {
 
 @media (max-width: 420px) {
   .home-hero {
+    --kv-stage-top: 14vh;
+    --kv-stage-width: 144vw;
+    --kv-lower-pattern-offset: 87.37vw;
     padding-inline: 10px;
   }
 
   .kv-stage {
-    top: 14vh;
-    width: 144vw;
     transform: translateX(-66%);
   }
 
@@ -1753,7 +1759,6 @@ body.is-home .site-footer {
   }
 
   .home-wordmark {
-    top: 45%;
     right: auto;
     left: 5%;
   }
