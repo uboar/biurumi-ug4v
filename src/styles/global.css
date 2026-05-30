@@ -1121,6 +1121,8 @@ body.is-home main {
 .home-hero {
   position: relative;
   isolation: isolate;
+  --home-frame-width: min(100%, 1720px);
+  --home-frame-gutter: max(0px, calc((100vw - 1720px) / 2));
   --home-bodyfront-top: 45%;
   --home-floor-height: 900px;
   --home-right-edge: clamp(42px, 6.3vw, 118px);
@@ -1168,6 +1170,13 @@ body.is-home main {
       transparent 50%
     ),
     rgba(182, 132, 255, 1);
+}
+
+.home-hero-frame {
+  position: relative;
+  width: var(--home-frame-width);
+  min-height: var(--home-min-height);
+  margin: 0 auto;
 }
 
 .home-hero::after {
@@ -1261,10 +1270,10 @@ body.is-home main {
 .kv-lower-pattern {
   z-index: 4;
   top: var(--kv-lower-pattern-offset);
-  right: -2%;
+  right: auto;
   bottom: min(0px, calc(var(--kv-stage-top) + 100% - var(--home-min-height)));
-  left: -9%;
-  width: 120lvw;
+  left: calc((var(--home-frame-gutter) * -1) - var(--kv-stage-left));
+  width: 100vw;
   height: auto;
   margin: 0;
   border: 0;

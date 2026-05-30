@@ -15,42 +15,44 @@ const topicItems = topics?.data.items.filter((item) => !item.draft).slice(0, 5) 
 ---
 
 <section class="home-hero" aria-label="PROJECT BIURUMI">
-  <div class="home-back-mark" aria-hidden="true">
-    <img src="/assets/brand/ug4v-logo-white.svg" width="1080" height="1080" alt="" loading="eager" decoding="async" />
-  </div>
-  <div class="home-wordmark" aria-hidden="true">
-    <span>CHARACTER PROJECT びうるみ</span>
-    <strong>BIURUMI</strong>
-  </div>
-
-  <div class="kv-stage is-kv-pending" role="img" aria-label="PROJECT BIURUMI character key visual" data-kv-stage>
-    <img class={kvLayers[0].className} src={kvLayers[0].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-    <img class={kvLayers[1].className} src={kvLayers[1].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-    <div class="kv-lower-pattern" aria-hidden="true"></div>
-    <img class={kvLayers[2].className} src={kvLayers[2].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-    <img class={kvLayers[3].className} src={kvLayers[3].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-    <img class={kvLayers[4].className} src={kvLayers[4].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-    <img class={kvLayers[5].className} src={kvLayers[5].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-  </div>
-
-  <div class="home-topics" aria-labelledby="home-topics-title">
-    <h2 id="home-topics-title">TOPICS</h2>
-    <div class="topic-list">
-      {topicItems.map((topic) => (
-        <article class="topic-row">
-          <time datetime={topic.datetime}>{topic.dateLabel}</time>
-          {topic.link ? <a href={topic.link}>{topic.text}</a> : <p>{topic.text}</p>}
-        </article>
-      ))}
+  <div class="home-hero-frame">
+    <div class="home-back-mark" aria-hidden="true">
+      <img src="/assets/brand/ug4v-logo-white.svg" width="1080" height="1080" alt="" loading="eager" decoding="async" />
     </div>
-  </div>
+    <div class="home-wordmark" aria-hidden="true">
+      <span>CHARACTER PROJECT びうるみ</span>
+      <strong>BIURUMI</strong>
+    </div>
 
-  <div class="home-hero-front">
-    <nav class="home-page-links" aria-label="主要ページ">
-      <a href="/about/"><span>ABOUT / びうるみについて</span></a>
-      <a href="/terms/"><span>TERMS / 利用規約</span></a>
-      <a href="https://addler.jp/c/biurumi"><span>DOWNLOAD / ダウンロード</span></a>
-      <a href="/links/"><span>LINKS / リンク</span></a>
-    </nav>
+    <div class="kv-stage is-kv-pending" role="img" aria-label="PROJECT BIURUMI character key visual" data-kv-stage>
+      <img class={kvLayers[0].className} src={kvLayers[0].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+      <img class={kvLayers[1].className} src={kvLayers[1].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+      <div class="kv-lower-pattern" aria-hidden="true"></div>
+      <img class={kvLayers[2].className} src={kvLayers[2].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+      <img class={kvLayers[3].className} src={kvLayers[3].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+      <img class={kvLayers[4].className} src={kvLayers[4].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+      <img class={kvLayers[5].className} src={kvLayers[5].src} width="1958" height="2160" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+    </div>
+
+    <div class="home-topics" aria-labelledby="home-topics-title">
+      <h2 id="home-topics-title">TOPICS</h2>
+      <div class="topic-list">
+        {topicItems.map((topic) => (
+          <article class="topic-row">
+            <time datetime={topic.datetime}>{topic.dateLabel}</time>
+            {topic.link ? <a href={topic.link}>{topic.text}</a> : <p>{topic.text}</p>}
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <div class="home-hero-front">
+      <nav class="home-page-links" aria-label="主要ページ">
+        <a href="/about/"><span>ABOUT / びうるみについて</span></a>
+        <a href="/terms/"><span>TERMS / 利用規約</span></a>
+        <a href="https://addler.jp/c/biurumi"><span>DOWNLOAD / ダウンロード</span></a>
+        <a href="/links/"><span>LINKS / リンク</span></a>
+      </nav>
+    </div>
   </div>
 </section>
