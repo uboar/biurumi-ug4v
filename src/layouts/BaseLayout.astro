@@ -74,294 +74,346 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
       </div>
     </dialog>
     <script is:inline>
-      let currentSampleVoice;
-      const artworkModal = document.querySelector('.artwork-modal');
-      const artworkModalViewport = document.querySelector('.artwork-modal-viewport');
-      const artworkModalImage = document.querySelector('.artwork-modal-image');
-      const artworkModalTitle = document.querySelector('#artwork-modal-title');
-      const artworkModalClose = document.querySelector('.artwork-modal-close');
-      let artworkModalCloseTimer;
-      let artworkScale = 1;
-      let artworkOffsetX = 0;
-      let artworkOffsetY = 0;
-      let artworkLastPinchDistance = 0;
-      const artworkPointers = new Map();
-      const artworkMinScale = 1;
-      const artworkMaxScale = 5;
+      (() => {
+        window.biurumiRuntime?.abortController?.abort();
 
-      window.biurumiInitKvStages = () => {
-        const kvStages = document.querySelectorAll('[data-kv-stage]');
-        const waitForImage = (image) => {
-          if (image.complete && image.naturalWidth > 0) {
-            return Promise.resolve();
-          }
+        const abortController = new AbortController();
+        const runtime = {
+          abortController,
+          currentSampleVoice: window.biurumiRuntime?.currentSampleVoice,
+        };
 
-          return new Promise((resolve) => {
-            image.addEventListener('load', () => resolve(), { once: true });
-            image.addEventListener('error', () => resolve(), { once: true });
+        window.biurumiRuntime = runtime;
+
+        let artworkModalCloseTimer;
+        let artworkScale = 1;
+        let artworkOffsetX = 0;
+        let artworkOffsetY = 0;
+        let artworkLastPinchDistance = 0;
+        const artworkPointers = new Map();
+        const initializedArtworkModals = new WeakSet();
+        const initializedArtworkViewports = new WeakSet();
+        const artworkMinScale = 1;
+        const artworkMaxScale = 5;
+
+        const getArtworkElements = () => ({
+          modal: document.querySelector('.artwork-modal'),
+          viewport: document.querySelector('.artwork-modal-viewport'),
+          image: document.querySelector('.artwork-modal-image'),
+          title: document.querySelector('#artwork-modal-title'),
+        });
+
+        window.biurumiInitKvStages = () => {
+          const kvStages = document.querySelectorAll('[data-kv-stage]');
+          const waitForImage = (image) => {
+            if (image.complete && image.naturalWidth > 0) {
+              return Promise.resolve();
+            }
+
+            return new Promise((resolve) => {
+              image.addEventListener('load', () => resolve(), { once: true });
+              image.addEventListener('error', () => resolve(), { once: true });
+            });
+          };
+
+          kvStages.forEach((stage) => {
+            const images = Array.from(stage.querySelectorAll('img'));
+
+            if (images.length === 0) {
+              stage.classList.remove('is-kv-pending');
+              stage.classList.add('is-kv-ready');
+              return;
+            }
+
+            Promise.all(images.map(waitForImage)).then(() => {
+              requestAnimationFrame(() => {
+                if (!stage.isConnected) {
+                  return;
+                }
+
+                stage.classList.remove('is-kv-pending');
+                stage.classList.add('is-kv-ready');
+              });
+            });
           });
         };
 
-        kvStages.forEach((stage) => {
-          const images = Array.from(stage.querySelectorAll('img'));
+        const clampArtworkOffset = () => {
+          const { viewport, image } = getArtworkElements();
 
-          if (images.length === 0) {
-            stage.classList.remove('is-kv-pending');
-            stage.classList.add('is-kv-ready');
+          if (!viewport || !image) {
             return;
           }
 
-          Promise.all(images.map(waitForImage)).then(() => {
-            requestAnimationFrame(() => {
-              if (!stage.isConnected) {
+          const viewportRect = viewport.getBoundingClientRect();
+          const maxX = Math.max(0, (image.offsetWidth * artworkScale - viewportRect.width) / 2);
+          const maxY = Math.max(0, (image.offsetHeight * artworkScale - viewportRect.height) / 2);
+
+          artworkOffsetX = Math.min(maxX, Math.max(-maxX, artworkOffsetX));
+          artworkOffsetY = Math.min(maxY, Math.max(-maxY, artworkOffsetY));
+        };
+
+        const applyArtworkZoom = () => {
+          const { image } = getArtworkElements();
+
+          if (!image) {
+            return;
+          }
+
+          clampArtworkOffset();
+          image.style.setProperty('--artwork-scale', String(artworkScale));
+          image.style.setProperty('--artwork-x', `${artworkOffsetX}px`);
+          image.style.setProperty('--artwork-y', `${artworkOffsetY}px`);
+          image.classList.toggle('is-zoomed', artworkScale > artworkMinScale);
+        };
+
+        const resetArtworkZoom = () => {
+          artworkScale = artworkMinScale;
+          artworkOffsetX = 0;
+          artworkOffsetY = 0;
+          artworkLastPinchDistance = 0;
+          artworkPointers.clear();
+          applyArtworkZoom();
+        };
+
+        const closeArtworkModal = () => {
+          const { modal, image } = getArtworkElements();
+
+          if (!modal?.open) {
+            return;
+          }
+
+          window.clearTimeout(artworkModalCloseTimer);
+          modal.classList.add('is-closing');
+          artworkModalCloseTimer = window.setTimeout(() => {
+            modal.close();
+            modal.classList.remove('is-closing');
+            image?.removeAttribute('src');
+            resetArtworkZoom();
+          }, 180);
+        };
+
+        const zoomArtworkAt = (nextScale, clientX, clientY) => {
+          const { viewport } = getArtworkElements();
+
+          if (!viewport) {
+            return;
+          }
+
+          const clampedScale = Math.min(artworkMaxScale, Math.max(artworkMinScale, nextScale));
+          const ratio = clampedScale / artworkScale;
+          const viewportRect = viewport.getBoundingClientRect();
+          const localX = clientX - viewportRect.left - viewportRect.width / 2;
+          const localY = clientY - viewportRect.top - viewportRect.height / 2;
+
+          artworkOffsetX = localX - (localX - artworkOffsetX) * ratio;
+          artworkOffsetY = localY - (localY - artworkOffsetY) * ratio;
+          artworkScale = clampedScale;
+          applyArtworkZoom();
+        };
+
+        const getArtworkPointerDistance = () => {
+          const pointers = Array.from(artworkPointers.values());
+
+          if (pointers.length < 2) {
+            return 0;
+          }
+
+          return Math.hypot(pointers[0].clientX - pointers[1].clientX, pointers[0].clientY - pointers[1].clientY);
+        };
+
+        const getArtworkPointerCenter = () => {
+          const pointers = Array.from(artworkPointers.values());
+
+          return {
+            clientX: (pointers[0].clientX + pointers[1].clientX) / 2,
+            clientY: (pointers[0].clientY + pointers[1].clientY) / 2,
+          };
+        };
+
+        const bindArtworkModalControls = () => {
+          const { modal, viewport } = getArtworkElements();
+
+          if (modal && !initializedArtworkModals.has(modal)) {
+            initializedArtworkModals.add(modal);
+            modal.addEventListener(
+              'cancel',
+              (event) => {
+                event.preventDefault();
+                closeArtworkModal();
+              },
+              { signal: abortController.signal },
+            );
+          }
+
+          if (!viewport || initializedArtworkViewports.has(viewport)) {
+            return;
+          }
+
+          initializedArtworkViewports.add(viewport);
+          viewport.addEventListener(
+            'wheel',
+            (event) => {
+              const { modal: currentModal } = getArtworkElements();
+
+              if (!currentModal?.open) {
                 return;
               }
 
-              stage.classList.remove('is-kv-pending');
-              stage.classList.add('is-kv-ready');
-            });
-          });
-        });
-      };
+              event.preventDefault();
+              const zoomFactor = Math.exp(-event.deltaY * 0.002);
+              zoomArtworkAt(artworkScale * zoomFactor, event.clientX, event.clientY);
+            },
+            { passive: false, signal: abortController.signal },
+          );
 
-      const closeArtworkModal = () => {
-        if (!artworkModal?.open) {
-          return;
-        }
+          viewport.addEventListener(
+            'pointerdown',
+            (event) => {
+              viewport.setPointerCapture(event.pointerId);
+              artworkPointers.set(event.pointerId, {
+                clientX: event.clientX,
+                clientY: event.clientY,
+              });
 
-        window.clearTimeout(artworkModalCloseTimer);
-        artworkModal.classList.add('is-closing');
-        artworkModalCloseTimer = window.setTimeout(() => {
-          artworkModal.close();
-          artworkModal.classList.remove('is-closing');
-          if (artworkModalImage) {
-            artworkModalImage.removeAttribute('src');
-          }
-          resetArtworkZoom();
-        }, 180);
-      };
+              if (artworkPointers.size === 2) {
+                artworkLastPinchDistance = getArtworkPointerDistance();
+              }
+            },
+            { signal: abortController.signal },
+          );
 
-      const clampArtworkOffset = () => {
-        if (!artworkModalViewport || !artworkModalImage) {
-          return;
-        }
+          viewport.addEventListener(
+            'pointermove',
+            (event) => {
+              if (!artworkPointers.has(event.pointerId)) {
+                return;
+              }
 
-        const viewportRect = artworkModalViewport.getBoundingClientRect();
-        const maxX = Math.max(0, (artworkModalImage.offsetWidth * artworkScale - viewportRect.width) / 2);
-        const maxY = Math.max(0, (artworkModalImage.offsetHeight * artworkScale - viewportRect.height) / 2);
+              const previousPointer = artworkPointers.get(event.pointerId);
 
-        artworkOffsetX = Math.min(maxX, Math.max(-maxX, artworkOffsetX));
-        artworkOffsetY = Math.min(maxY, Math.max(-maxY, artworkOffsetY));
-      };
+              artworkPointers.set(event.pointerId, {
+                clientX: event.clientX,
+                clientY: event.clientY,
+              });
 
-      const applyArtworkZoom = () => {
-        if (!artworkModalImage) {
-          return;
-        }
+              if (artworkPointers.size === 1 && artworkScale > artworkMinScale && previousPointer) {
+                artworkOffsetX += event.clientX - previousPointer.clientX;
+                artworkOffsetY += event.clientY - previousPointer.clientY;
+                applyArtworkZoom();
+                return;
+              }
 
-        clampArtworkOffset();
-        artworkModalImage.style.setProperty('--artwork-scale', String(artworkScale));
-        artworkModalImage.style.setProperty('--artwork-x', `${artworkOffsetX}px`);
-        artworkModalImage.style.setProperty('--artwork-y', `${artworkOffsetY}px`);
-        artworkModalImage.classList.toggle('is-zoomed', artworkScale > artworkMinScale);
-      };
+              if (artworkPointers.size !== 2) {
+                return;
+              }
 
-      const resetArtworkZoom = () => {
-        artworkScale = artworkMinScale;
-        artworkOffsetX = 0;
-        artworkOffsetY = 0;
-        artworkLastPinchDistance = 0;
-        artworkPointers.clear();
-        applyArtworkZoom();
-      };
+              const nextDistance = getArtworkPointerDistance();
 
-      const zoomArtworkAt = (nextScale, clientX, clientY) => {
-        if (!artworkModalViewport) {
-          return;
-        }
+              if (artworkLastPinchDistance > 0 && nextDistance > 0) {
+                const center = getArtworkPointerCenter();
+                zoomArtworkAt(artworkScale * (nextDistance / artworkLastPinchDistance), center.clientX, center.clientY);
+              }
 
-        const clampedScale = Math.min(artworkMaxScale, Math.max(artworkMinScale, nextScale));
-        const ratio = clampedScale / artworkScale;
-        const viewportRect = artworkModalViewport.getBoundingClientRect();
-        const localX = clientX - viewportRect.left - viewportRect.width / 2;
-        const localY = clientY - viewportRect.top - viewportRect.height / 2;
+              artworkLastPinchDistance = nextDistance;
+            },
+            { signal: abortController.signal },
+          );
 
-        artworkOffsetX = localX - (localX - artworkOffsetX) * ratio;
-        artworkOffsetY = localY - (localY - artworkOffsetY) * ratio;
-        artworkScale = clampedScale;
-        applyArtworkZoom();
-      };
+          const endArtworkPointer = (event) => {
+            artworkPointers.delete(event.pointerId);
 
-      const getArtworkPointerDistance = () => {
-        const pointers = Array.from(artworkPointers.values());
+            if (artworkPointers.size < 2) {
+              artworkLastPinchDistance = 0;
+            }
+          };
 
-        if (pointers.length < 2) {
-          return 0;
-        }
-
-        return Math.hypot(pointers[0].clientX - pointers[1].clientX, pointers[0].clientY - pointers[1].clientY);
-      };
-
-      const getArtworkPointerCenter = () => {
-        const pointers = Array.from(artworkPointers.values());
-
-        return {
-          clientX: (pointers[0].clientX + pointers[1].clientX) / 2,
-          clientY: (pointers[0].clientY + pointers[1].clientY) / 2,
+          viewport.addEventListener('pointerup', endArtworkPointer, { signal: abortController.signal });
+          viewport.addEventListener('pointercancel', endArtworkPointer, { signal: abortController.signal });
+          viewport.addEventListener('lostpointercapture', endArtworkPointer, { signal: abortController.signal });
         };
-      };
 
-      document.addEventListener('click', (event) => {
-        if (!(event.target instanceof Element)) {
-          return;
-        }
+        document.addEventListener(
+          'click',
+          (event) => {
+            if (!(event.target instanceof Element)) {
+              return;
+            }
 
-        const artworkButton = event.target.closest('.artwork-zoom-button');
+            if (event.target.closest('.artwork-modal-close') || event.target.matches('.artwork-modal')) {
+              closeArtworkModal();
+              return;
+            }
 
-        if (artworkButton && artworkModal && artworkModalImage && artworkModalTitle) {
-          const image = artworkButton.querySelector('img');
+            const artworkButton = event.target.closest('.artwork-zoom-button');
 
-          if (image) {
-            resetArtworkZoom();
-            artworkModalImage.src = image.currentSrc || image.src;
-            artworkModalImage.alt = image.alt;
-            artworkModalTitle.textContent = image.alt || 'Artwork';
-            artworkModal.classList.remove('is-closing');
-            artworkModal.showModal();
-          }
+            if (artworkButton) {
+              const { modal, image: modalImage, title } = getArtworkElements();
+              const image = artworkButton.querySelector('img');
 
-          return;
-        }
+              if (modal && modalImage && title && image) {
+                window.clearTimeout(artworkModalCloseTimer);
+                resetArtworkZoom();
+                modalImage.src = image.currentSrc || image.src;
+                modalImage.alt = image.alt;
+                title.textContent = image.alt || 'Artwork';
+                modal.classList.remove('is-closing');
 
-        const termsAgreeButton = event.target.closest('[data-terms-agree-button]');
+                if (!modal.open) {
+                  modal.showModal();
+                }
+              }
 
-        if (termsAgreeButton) {
-          const termsDownloadGate = termsAgreeButton.closest('[data-terms-download-gate]');
-          const termsDownloadCode = termsDownloadGate?.querySelector('[data-terms-download-code]');
+              return;
+            }
 
-          termsDownloadCode?.removeAttribute('hidden');
-          termsDownloadGate?.classList.add('is-agreed');
-          termsAgreeButton.setAttribute('disabled', '');
-          termsAgreeButton.textContent = '利用規約に同意済み';
+            const termsAgreeButton = event.target.closest('[data-terms-agree-button]');
 
-          return;
-        }
+            if (termsAgreeButton) {
+              const termsDownloadGate = termsAgreeButton.closest('[data-terms-download-gate]');
+              const termsDownloadCode = termsDownloadGate?.querySelector('[data-terms-download-code]');
 
-        const button = event.target.closest('[data-audio-src]');
+              termsDownloadCode?.removeAttribute('hidden');
+              termsDownloadGate?.classList.add('is-agreed');
+              termsAgreeButton.setAttribute('disabled', '');
+              termsAgreeButton.textContent = '利用規約に同意済み';
 
-        if (!button) {
-          return;
-        }
+              return;
+            }
 
-        const src = button.getAttribute('data-audio-src');
+            const button = event.target.closest('[data-audio-src]');
 
-        if (!src) {
-          return;
-        }
+            if (!button) {
+              return;
+            }
 
-        if (currentSampleVoice) {
-          currentSampleVoice.pause();
-        }
+            const src = button.getAttribute('data-audio-src');
 
-        currentSampleVoice = new Audio(src);
-        currentSampleVoice.volume = 0.5;
-        currentSampleVoice.play().catch(() => {
-          currentSampleVoice = undefined;
-        });
-      });
+            if (!src) {
+              return;
+            }
 
-      window.biurumiInitKvStages();
+            if (runtime.currentSampleVoice) {
+              runtime.currentSampleVoice.pause();
+            }
 
-      if (!window.biurumiKvPageLoadListener) {
-        window.biurumiKvPageLoadListener = () => window.biurumiInitKvStages?.();
-        document.addEventListener('astro:page-load', window.biurumiKvPageLoadListener);
-      }
+            runtime.currentSampleVoice = new Audio(src);
+            runtime.currentSampleVoice.volume = 0.5;
+            runtime.currentSampleVoice.play().catch(() => {
+              runtime.currentSampleVoice = undefined;
+            });
+          },
+          { signal: abortController.signal },
+        );
 
-      artworkModalClose?.addEventListener('click', () => {
-        closeArtworkModal();
-      });
+        const initPage = () => {
+          window.biurumiInitKvStages();
+          bindArtworkModalControls();
+        };
 
-      artworkModal?.addEventListener('click', (event) => {
-        if (event.target === artworkModal) {
-          closeArtworkModal();
-        }
-      });
-
-      artworkModal?.addEventListener('cancel', (event) => {
-        event.preventDefault();
-        closeArtworkModal();
-      });
-
-      artworkModalViewport?.addEventListener(
-        'wheel',
-        (event) => {
-          if (!artworkModal?.open) {
-            return;
-          }
-
-          event.preventDefault();
-          const zoomFactor = Math.exp(-event.deltaY * 0.002);
-          zoomArtworkAt(artworkScale * zoomFactor, event.clientX, event.clientY);
-        },
-        { passive: false },
-      );
-
-      artworkModalViewport?.addEventListener('pointerdown', (event) => {
-        artworkModalViewport.setPointerCapture(event.pointerId);
-        artworkPointers.set(event.pointerId, {
-          clientX: event.clientX,
-          clientY: event.clientY,
-        });
-
-        if (artworkPointers.size === 2) {
-          artworkLastPinchDistance = getArtworkPointerDistance();
-        }
-      });
-
-      artworkModalViewport?.addEventListener('pointermove', (event) => {
-        if (!artworkPointers.has(event.pointerId)) {
-          return;
-        }
-
-        const previousPointer = artworkPointers.get(event.pointerId);
-
-        artworkPointers.set(event.pointerId, {
-          clientX: event.clientX,
-          clientY: event.clientY,
-        });
-
-        if (artworkPointers.size === 1 && artworkScale > artworkMinScale && previousPointer) {
-          artworkOffsetX += event.clientX - previousPointer.clientX;
-          artworkOffsetY += event.clientY - previousPointer.clientY;
-          applyArtworkZoom();
-          return;
-        }
-
-        if (artworkPointers.size !== 2) {
-          return;
-        }
-
-        const nextDistance = getArtworkPointerDistance();
-
-        if (artworkLastPinchDistance > 0 && nextDistance > 0) {
-          const center = getArtworkPointerCenter();
-          zoomArtworkAt(artworkScale * (nextDistance / artworkLastPinchDistance), center.clientX, center.clientY);
-        }
-
-        artworkLastPinchDistance = nextDistance;
-      });
-
-      const endArtworkPointer = (event) => {
-        artworkPointers.delete(event.pointerId);
-
-        if (artworkPointers.size < 2) {
-          artworkLastPinchDistance = 0;
-        }
-      };
-
-      artworkModalViewport?.addEventListener('pointerup', endArtworkPointer);
-      artworkModalViewport?.addEventListener('pointercancel', endArtworkPointer);
-      artworkModalViewport?.addEventListener('lostpointercapture', endArtworkPointer);
+        initPage();
+        document.addEventListener('astro:page-load', initPage, { signal: abortController.signal });
+      })();
     </script>
   </body>
 </html>
