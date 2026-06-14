@@ -66,7 +66,12 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
       <div class="artwork-modal-panel">
         <div class="artwork-modal-header">
           <h2 id="artwork-modal-title">Artwork</h2>
-          <button class="artwork-modal-close" type="button" aria-label="閉じる">×</button>
+          <div class="artwork-modal-actions">
+            <a class="artwork-modal-download" href="#" download target="_blank" rel="noopener">
+              元画質DL
+            </a>
+            <button class="artwork-modal-close" type="button" aria-label="閉じる">×</button>
+          </div>
         </div>
         <div class="artwork-modal-viewport" aria-label="アートワーク拡大表示エリア">
           <img class="artwork-modal-image" alt="" draggable="false" />
@@ -101,6 +106,7 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
           viewport: document.querySelector('.artwork-modal-viewport'),
           image: document.querySelector('.artwork-modal-image'),
           title: document.querySelector('#artwork-modal-title'),
+          downloadLink: document.querySelector('.artwork-modal-download'),
         });
 
         window.biurumiInitKvStages = () => {
@@ -177,7 +183,7 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
         };
 
         const closeArtworkModal = () => {
-          const { modal, image } = getArtworkElements();
+          const { modal, image, downloadLink } = getArtworkElements();
 
           if (!modal?.open) {
             return;
@@ -189,6 +195,8 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
             modal.close();
             modal.classList.remove('is-closing');
             image?.removeAttribute('src');
+            downloadLink?.removeAttribute('href');
+            downloadLink?.removeAttribute('download');
             resetArtworkZoom();
           }, 180);
         };
@@ -348,15 +356,20 @@ const ogImage = new URL('/assets/og.webp', Astro.site ?? Astro.url);
             const artworkButton = event.target.closest('.artwork-zoom-button');
 
             if (artworkButton) {
-              const { modal, image: modalImage, title } = getArtworkElements();
+              const { modal, image: modalImage, title, downloadLink } = getArtworkElements();
               const image = artworkButton.querySelector('img');
 
               if (modal && modalImage && title && image) {
+                const downloadSrc = image.getAttribute('data-download-src') || image.src;
+                const downloadFilename = decodeURIComponent(downloadSrc.split('/').pop() || 'artwork.webp');
+
                 window.clearTimeout(artworkModalCloseTimer);
                 resetArtworkZoom();
                 modalImage.src = image.currentSrc || image.src;
                 modalImage.alt = image.alt;
                 title.textContent = image.alt || 'Artwork';
+                downloadLink?.setAttribute('href', downloadSrc);
+                downloadLink?.setAttribute('download', downloadFilename);
                 modal.classList.remove('is-closing');
 
                 if (!modal.open) {

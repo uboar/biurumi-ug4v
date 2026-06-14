@@ -995,23 +995,57 @@ h3 {
 }
 
 .artwork-modal-header h2 {
+  min-width: 0;
   margin: 0;
   font-size: 18px;
 }
 
+.artwork-modal-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.artwork-modal-download,
 .artwork-modal-close {
   display: grid;
   place-items: center;
-  width: 42px;
   height: 42px;
   border: 1px solid rgba(195, 155, 255, 0.16);
   border-radius: var(--radius-full);
   color: var(--on-surface);
   background: rgba(47, 41, 64, 0.72);
   font: inherit;
-  font-size: 24px;
   line-height: 1;
   cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-base) var(--ease-emphasis);
+}
+
+.artwork-modal-download {
+  min-width: 100px;
+  padding: 0 16px;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.artwork-modal-close {
+  width: 42px;
+  font-size: 24px;
+}
+
+.artwork-modal-download:hover,
+.artwork-modal-download:focus-visible,
+.artwork-modal-close:hover,
+.artwork-modal-close:focus-visible {
+  border-color: rgba(255, 108, 149, 0.42);
+  background: rgba(70, 56, 92, 0.82);
+  transform: translateY(-1px);
 }
 
 .artwork-modal-viewport {
