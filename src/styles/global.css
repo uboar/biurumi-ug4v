@@ -1424,7 +1424,7 @@ body.is-home main {
 
 .topic-row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 6.8em minmax(0, 1fr);
   align-items: start;
   gap: 0.45em;
   padding: 0;
@@ -1447,6 +1447,7 @@ body.is-home main {
 }
 
 .topic-row time {
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
